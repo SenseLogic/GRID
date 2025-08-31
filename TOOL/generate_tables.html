@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body
+            {
+                font-family: Arial, sans-serif;
+                margin: 1rem;
+            }
+
+            textarea
+            {
+                width: 100%;
+                font-family: monospace;
+                margin-bottom: 1rem;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea id="sinus-array" style="height: 19rem" readonly></textarea>
+        <textarea id="angle-array" style="height: 38rem" readonly></textarea>
+        <textarea id="depth-array" style="height: 38rem" readonly></textarea>
+        <textarea id="freq-array-440Hz" style="height: 11rem" readonly></textarea>
+        <textarea id="freq-array-435Hz" style="height: 11rem" readonly></textarea>
+        <textarea id="arrow-array" style="height: 20rem" readonly></textarea>
+
+        <script>
+            // -- FUNCTIONS
+
+            function GetArrayCode(
+                value_array,
+                array_type,
+                array_name,
+                row_value_count = 16
+                )
+            {
+                var
+                    code,
+                    value_count,
+                    value_index;
+
+                code = array_type + " " + array_name + "[ " + value_array.length + " ] =\n    {\n        ";
+
+                value_count = value_array.length;
+
+                for ( value_index = 0;
+                      value_index < value_count;
+                      ++value_index )
+                {
+                    code += value_array[ value_index ];
+
+                    if ( value_index === value_count - 1 )
+                    {
+                        code += "\n";
+                    }
+                    else if ( ( value_index + 1 ) % row_value_count === 0 )
+                    {
+                        code += ",\n        ";
+                    }
+                    else if ( value_index < value_array.length - 1 )
+                    {
+                        code += ", ";
+                    }
+                }
+
+                code += "    };";
+
+                return code;
+            }
+
+            // ~~
+
+            function GenerateSinusArray(
+                )
+            {
+                var
+                    angle,
+                    angle_count,
+                    angle_index,
+                    angle_sinus,
+                    angle_sinus_amplitude,
+                    angle_sinus_array;
+
+                angle_count = 256;
+                angle_sinus_amplitude = 64;
+                angle_sinus_array = [];
+
+                for ( angle_index = 0;
+                     angle_index < angle_count;
+                     ++angle_index )
+                {
+                    angle = ( angle_index / angle_count ) * 2 * Math.PI;
+                    angle_sinus = Math.round( Math.sin( angle ) * angle_sinus_amplitude );
+                    angle_sinus_array.push( angle_sinus );
+                }
+
+                document.getElementById( "sinus-array" ).textContent
+                    = GetArrayCode( angle_sinus_array, "int8_t", "AngleSinusArray" );
+            }
+
+            // ~~
+
+            function GenerateAngleArray(
+                )
+            {
+                var
+                    y_angle,
+                    y_angle_array,
+                    y_angle_count,
+                    x,
+                    y;
+
+                y_angle_count = 256;
+                y_angle_array = [];
+
+                for ( y = 0;
+                      y <= 32;
+                      ++y )
+                {
+                    for ( x = 0;
+                          x <= 32;
+                          ++x )
+                    {
+                        y_angle = Math.round( Math.atan2( x, y ) * ( y_angle_count / 2 / Math.PI ) );
+                        y_angle_array.push( y_angle );
+                    }
+                }
+
+                document.getElementById( "angle-array" ).textContent
+                    = GetArrayCode( y_angle_array, "int8_t", "YAngleArray", 33 );
+            }
+
+            // ~~
+
+            function GenerateDepthArray(
+                )
+            {
+                var
+                    depth_factor,
+                    depth_factor_array,
+                    x,
+                    y;
+
+                depth_factor_array = [];
+                camera_lens = 2;
+                y = 32;
+
+                for ( z = 0;
+                      z < 1024;
+                      ++z )
+                {
+                    depth_factor = Math.round( ( y * 32 + camera_lens ) / ( z + camera_lens ) );
+                    depth_factor_array.push( depth_factor );
+                }
+
+                document.getElementById( "depth-array" ).textContent
+                    = GetArrayCode( depth_factor_array, "uint16_t", "DepthFactorArray", 32 );
+            }
+
+            // ~~
+
+            function GetHexadecimalValue(
+                natural,
+                character_count
+                )
+            {
+                if ( natural <= 0xFFFF )
+                {
+                    return "0x" + natural.toString( 16 ).toUpperCase().padStart( character_count, '0' );
+                }
+                else
+                {
+                    return "0xFFFF";
+                }
+            }
+
+            // ~~
+
+            function GenerateFrequencyArray(
+                variant
+                )
+            {
+                var
+                    base_frequency,
+                    frequency,
+                    frequency_array,
+                    frequency_multiplier,
+                    note_index,
+                    octave_index;
+
+                frequency_multiplier = Math.pow( 2, 1/12 );
+                frequency_array = [];
+
+                if ( variant == "440Hz" )
+                {
+                    base_frequency = 0x0115;
+                }
+                else
+                {
+                    base_frequency = 0x0112;
+                }
+
+                for ( octave_index = 0;
+                      octave_index <= 7;
+                      ++octave_index )
+                {
+                    frequency = base_frequency * Math.pow( 2, octave_index );
+                    frequency_array.push( GetHexadecimalValue( Math.round( frequency ), 4 ) );
+
+                    for ( note_index = 1;
+                          note_index < 12;
+                          ++note_index )
+                    {
+                        frequency *= frequency_multiplier;
+                        frequency_array.push( GetHexadecimalValue( Math.round( frequency ), 4 ) );
+                    }
+                }
+
+                return frequency_array;
+            }
+
+            // ~~
+
+            function GenerateFrequencyArrays(
+                )
+            {
+                var
+                    frequency_array_440hz,
+                    frequency_array_435hz;
+
+                frequency_array_440hz = GenerateFrequencyArray( "440Hz" );
+                frequency_array_435hz = GenerateFrequencyArray( "435Hz" );
+
+                document.getElementById( "freq-array-440Hz" ).textContent
+                    = GetArrayCode( frequency_array_440hz, "const uint16_t", "NoteFrequencyArray440Hz", 12 );
+
+                document.getElementById( "freq-array-435Hz" ).textContent
+                    = GetArrayCode( frequency_array_435hz, "const uint16_t", "NoteFrequencyArray435Hz", 12 );
+            }
+
+            // -- STATEMENTS
+
+            GenerateSinusArray();
+            GenerateAngleArray();
+            GenerateDepthArray();
+            GenerateFrequencyArrays();
+            GenerateArrowArrays();
+        </script>
+    </body>
+</html>

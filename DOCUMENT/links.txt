@@ -1,0 +1,36 @@
+C64
+
+    https://c64-wiki.com/wiki/53272
+    https://c64-wiki.com/wiki/Character_set
+    https://c64-wiki.com/wiki/Extended_color_mode
+    https://c64-wiki.com/wiki/Joystick
+    https://c64-wiki.com/wiki/Raster_interrupt
+    https://c64-wiki.com/wiki/SID
+    https://c64-wiki.com/wiki/Sprite
+    https://c64-wiki.com/wiki/VIC
+    https://c64-wiki.com/wiki/VIC_bank
+    https://cc65.github.io/doc/coding.html
+    https://codebase64.org/doku.php?id=base:vicii_memory_organizing
+    https://sta.c64.org/cbm64mem.html
+    https://sta.c64.org/cbm64sndfreq.html
+    https://vice-emu.sourceforge.io/vice_1.html
+
+Tron
+
+    https://sketchfab.com/3d-models/tron-recognizer-c04f3e9d44d549408ced9ac077bed28f
+    https://sketchfab.com/3d-models/tron-1982-d7b1e9a03bca4bb6aa636b56ae45ec88
+    https://tron.fandom.com/wiki/Recognizer
+    https://tron.fandom.com/wiki/Super_Recognizer
+    https://tron.fandom.com/wiki/Tank
+    https://tron.fandom.com/wiki/Tank_Arrow
+    https://youtube.com/watch?v=kKBuOtedf3E
+    https://fancaps.net/movies/MovieImages.php?name=TRON_1982&movieid=1707
+
+Tool
+
+    https://csdb.dk/release/?id=221083
+    https://ezgif.com
+    https://pixieditor.net
+    https://sourceforge.net/projects/cc65
+    https://sourceforge.net/projects/vice-emu
+    https://spritemate.com

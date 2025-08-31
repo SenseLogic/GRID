@@ -1,0 +1,20 @@
+..\..\..\TOOL\PIX\pix --read-png COMPASS\FirstCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\FirstCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\SecondCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\SecondCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\ThirdCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\ThirdCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\FourthCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\FourthCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\FifthCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\FifthCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\SixthCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\SixthCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\SeventhCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\SeventhCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png COMPASS\EighthCompassSprite.png 1 1 --binarize 128 --trim --write-c COMPASS\EighthCompassSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\FirstMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\FirstMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\SecondMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\SecondMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\ThirdMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\ThirdMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\FourthMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\FourthMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\FifthMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\FifthMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\SixthMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\SixthMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\SeventhMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\SeventhMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png MOUNTAIN\EighthMountainSprite.png 1 1 --binarize 128 --trim --write-c MOUNTAIN\EighthMountainSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png RADAR\RadarFrameSprite.png 1 1 --binarize 128 --trim --write-c RADAR\RadarFrameSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png RETICLE\ReticleSprite.png 1 1 --binarize 128 --trim --write-c RETICLE\ReticleSprite.c 24 21
+..\..\..\TOOL\PIX\pix --read-png TITLE\TitleSprite.png 1 1 --binarize 128 --trim --write-c TITLE\TitleSprite.c 24 21
+pause

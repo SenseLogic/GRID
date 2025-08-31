@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Draw models</title>
+    </head>
+    <body style="font-family: sans-serif">
+        <fieldset>
+        <legend>Options</legend>
+            <div>
+                <label for="projection">Projection:</label>
+                <select id="projection" name="projection" onchange="SetProjectionType( this.value )">
+                    <option value="flat">Flat</option>
+                    <option value="isometric">Isometric</option>
+                    <option value="perspective" selected>Perspective</option>
+                </select>
+            </div>
+        </fieldset>
+        <div id="content"></div>
+        <script>
+            // -- CONSTANTS
+
+            const
+                GridSize = 25,
+                ImageWidth = 1600,
+                ImageHeight = 1200;
+
+            // -- VARIABLES
+
+            var
+                XAngle = 0,
+                YAngle = 0,
+                ZAngle = 0,
+                ProjectionType = "perspective",
+                DragOldX = 0,
+                DragOldY = 0,
+                ItIsDragging = false;
+
+            // -- FUNCTIONS
+
+            function SetProjectionType( value )
+            {
+                ProjectionType = value;
+                DrawModels();
+            }
+
+            // ~~
+
+            function GetRotatedVector(
+                x,
+                y,
+                z
+                )
+            {
+                var
+                    rotated_x,
+                    rotated_y,
+                    rotated_z,
+                    x_angle,
+                    y_angle,
+                    z_angle;
+
+                x_angle = Math.round( XAngle / 15 ) * 15 * Math.PI / 180;
+                y_angle = Math.round( YAngle / 15 ) * 15 * Math.PI / 180;
+                z_angle = Math.round( ZAngle / 15 ) * 15 * Math.PI / 180;
+
+                rotated_x = x * Math.cos( z_angle ) + y * Math.sin( z_angle );
+                rotated_y = y * Math.cos( z_angle ) - x * Math.sin( z_angle );
+
+                x = rotated_x;
+                y = rotated_y;
+
+                rotated_y = y * Math.cos( x_angle ) + z * Math.sin( x_angle );
+                rotated_z = z * Math.cos( x_angle ) - y * Math.sin( x_angle );
+
+                rotated_x = x * Math.cos( y_angle ) + rotated_z * Math.sin( y_angle );
+                rotated_z = rotated_z * Math.cos( y_angle ) - x * Math.sin( y_angle );
+
+                return [ rotated_x, rotated_y, rotated_z ];
+            }
+
+            // ~~
+
+            function GetProjectedX(
+                origin_x,
+                origin_y,
+                x,
+                y,
+                z
+                )
+            {
+                let [ rotated_x, rotated_y, rotated_z ] = GetRotatedVector( x, y, z );
+
+                if ( ProjectionType === "flat" )
+                {
+                    return origin_x + rotated_x * GridSize;
+                }
+                else if ( ProjectionType === "isometric" )
+                {
+                    return origin_x + ( rotated_x + rotated_z ) * GridSize;
+                }
+                else if ( ProjectionType === "perspective" )
+                {
+                    return origin_x + GridSize * ( rotated_x * 32 + 32 ) / ( rotated_z + 32 );
+                }
+            }
+
+            // ~~
+
+            function GetProjectedY(
+                origin_x,
+                origin_y,
+                x,
+                y,
+                z
+                )
+            {
+                let [ rotated_x, rotated_y, rotated_z ] = GetRotatedVector( x, y, z );
+
+                if ( ProjectionType === "flat" )
+                {
+                    return origin_y - rotated_y * GridSize;
+                }
+                else if ( ProjectionType === "isometric" )
+                {
+                    return origin_y - ( rotated_y + rotated_z * 0.5 ) * GridSize;
+                }
+                else if ( ProjectionType === "perspective" )
+                {
+                    return origin_y - GridSize * ( rotated_y * 32 + 32 ) / ( rotated_z + 32 );
+                }
+            }
+
+            // ~~
+
+            function DrawModel(
+                model_name,
+                vertex_name_array,
+                vertex_component_array,
+                edge_vertex_index_array
+                )
+            {
+                var
+                    axis_length,
+                    axis_origin_x,
+                    axis_origin_y,
+                    code,
+                    code_element,
+                    div_element,
+                    dot,
+                    edge_index,
+                    edge_vertex_index,
+                    edge_vertex_index_array,
+                    edge_count,
+                    first_vertex_index,
+                    first_vertex_x,
+                    first_vertex_y,
+                    first_vertex_z,
+                    last_vertex_index,
+                    last_vertex_x,
+                    last_vertex_y,
+                    last_vertex_z,
+                    line_element,
+                    line_x,
+                    line_y,
+                    origin_x,
+                    origin_y,
+                    svg_element,
+                    svg_namespace,
+                    text_element,
+                    vertex_component_array,
+                    vertex_component_count,
+                    vertex_component_index,
+                    vertex_name,
+                    vertex_name_index,
+                    vertex_x,
+                    vertex_y,
+                    vertex_z;
+
+                origin_x = ImageWidth * 0.5;
+                origin_y = ImageHeight * 0.5;
+                svg_namespace = "http://www.w3.org/2000/svg";
+
+                svg_element = document.createElementNS( svg_namespace, "svg" );
+                svg_element.setAttribute( "width", "100%" );
+                svg_element.setAttribute( "height", "100%" );
+                svg_element.setAttribute( "viewBox", "0 0 " + ImageWidth + " " + ImageHeight );
+                svg_element.setAttribute( "preserveAspectRatio", "xMidYMid meet" );
+                svg_element.setAttribute( "style", "background: #F0F0F0; user-select: none; width: 100%; height: 100%" );
+
+                for ( line_x = 0;
+                      line_x < ImageWidth;
+                      line_x += GridSize )
+                {
+                    line_element = document.createElementNS( svg_namespace, "line" );
+                    line_element.setAttribute( "x1", line_x );
+                    line_element.setAttribute( "y1", 0 );
+                    line_element.setAttribute( "x2", line_x );
+                    line_element.setAttribute( "y2", ImageHeight );
+                    line_element.setAttribute( "stroke", "#D0D0D0" );
+                    line_element.setAttribute( "stroke-width", 0.5 );
+                    svg_element.appendChild( line_element );
+                }
+
+                for ( line_y = 0;
+                      line_y < ImageHeight;
+                      line_y += GridSize )
+                {
+                    line_element = document.createElementNS( svg_namespace, "line" );
+                    line_element.setAttribute( "x1", 0 );
+                    line_element.setAttribute( "y1", line_y );
+                    line_element.setAttribute( "x2", ImageWidth );
+                    line_element.setAttribute( "y2", line_y );
+                    line_element.setAttribute( "stroke", "#D0D0D0" );
+                    line_element.setAttribute( "stroke-width", 0.5 );
+                    svg_element.appendChild( line_element );
+                }
+
+                text_element = document.createElementNS( svg_namespace, "text" );
+                text_element.setAttribute( "x", 10 );
+                text_element.setAttribute( "y", GridSize );
+                text_element.setAttribute( "fill", "#000000" );
+                text_element.setAttribute( "font-size", "18px" );
+                text_element.setAttribute( "font-weight", "bold" );
+                text_element.textContent = model_name + " Z=" + Math.round( ZAngle / 15 ) * 15 + " X=" + Math.round( XAngle / 15 ) * 15 + " Y=" + Math.round( YAngle / 15 ) * 15;
+                svg_element.appendChild( text_element );
+
+                text_element = document.createElementNS( svg_namespace, "text" );
+                text_element.setAttribute( "x", 10 );
+                text_element.setAttribute( "y", ImageHeight - GridSize );
+                text_element.setAttribute( "fill", "#000000" );
+                text_element.setAttribute( "font-size", "18px" );
+                text_element.setAttribute( "font-weight", "bold" );
+                text_element.textContent = vertex_component_array.length + " vertex coordinates, " + edge_vertex_index_array.length + " edge indices, " + vertex_component_array.length / 3 + " vertices, " + edge_vertex_index_array.length / 2 + " edges";
+                svg_element.appendChild( text_element );
+
+                for ( edge_vertex_index = 0;
+                      edge_vertex_index < edge_vertex_index_array.length;
+                      edge_vertex_index += 2 )
+                {
+                    first_vertex_index = edge_vertex_index_array[ edge_vertex_index ];
+                    last_vertex_index = edge_vertex_index_array[ edge_vertex_index + 1 ];
+
+                    first_vertex_x = vertex_component_array[ first_vertex_index * 3 ];
+                    first_vertex_y = vertex_component_array[ first_vertex_index * 3 + 1 ];
+                    first_vertex_z = vertex_component_array[ first_vertex_index * 3 + 2 ];
+
+                    last_vertex_x = vertex_component_array[ last_vertex_index * 3 ];
+                    last_vertex_y = vertex_component_array[ last_vertex_index * 3 + 1 ];
+                    last_vertex_z = vertex_component_array[ last_vertex_index * 3 + 2 ];
+
+                    line_element = document.createElementNS( svg_namespace, "line" );
+                    line_element.setAttribute( "x1", GetProjectedX( origin_x, origin_y, first_vertex_x, first_vertex_y, first_vertex_z ) );
+                    line_element.setAttribute( "y1", GetProjectedY( origin_x, origin_y, first_vertex_x, first_vertex_y, first_vertex_z ) );
+                    line_element.setAttribute( "x2", GetProjectedX( origin_x, origin_y, last_vertex_x, last_vertex_y, last_vertex_z ) );
+                    line_element.setAttribute( "y2", GetProjectedY( origin_x, origin_y, last_vertex_x, last_vertex_y, last_vertex_z ) );
+                    line_element.setAttribute( "stroke", "#FFB0B0" );
+                    line_element.setAttribute( "stroke-width", 1 );
+                    svg_element.appendChild( line_element );
+                }
+
+                for ( vertex_component_index = 0;
+                      vertex_component_index < vertex_component_array.length;
+                      vertex_component_index += 3 )
+                {
+                    vertex_x = vertex_component_array[ vertex_component_index ];
+                    vertex_y = vertex_component_array[ vertex_component_index + 1 ];
+                    vertex_z = vertex_component_array[ vertex_component_index + 2 ];
+
+                    vertex_name_index = vertex_component_index / 3;
+
+                    if ( vertex_name_index < vertex_name_array.length )
+                    {
+                        vertex_name = vertex_name_array[ vertex_name_index ];
+                    }
+                    else
+                    {
+                        vertex_name = "#" + vertex_name_index;
+                    }
+
+                    text_element = document.createElementNS( svg_namespace, "text" );
+                    text_element.setAttribute( "x", GetProjectedX( origin_x, origin_y, vertex_x, vertex_y, vertex_z ) - 0.15 * GridSize );
+                    text_element.setAttribute( "y", GetProjectedY( origin_x, origin_y, vertex_x, vertex_y, vertex_z ) - 0.55 * GridSize );
+                    text_element.setAttribute( "fill", "#0000FF" );
+                    text_element.setAttribute( "font-size", "9px" );
+                    text_element.setAttribute( "font-weight", "bold" );
+                    text_element.textContent = vertex_name + " (" + vertex_x + ", " + vertex_y + ", " + vertex_z + ")";
+                    svg_element.appendChild( text_element );
+
+                    dot = document.createElementNS( svg_namespace, "circle" );
+                    dot.setAttribute( "cx", GetProjectedX( origin_x, origin_y, vertex_x, vertex_y, vertex_z ) );
+                    dot.setAttribute( "cy", GetProjectedY( origin_x, origin_y, vertex_x, vertex_y, vertex_z ) );
+                    dot.setAttribute( "r", 2 );
+                    dot.setAttribute( "fill", "#000000" );
+                    svg_element.appendChild( dot );
+                }
+
+                axis_length = GridSize;
+                axis_origin_x = ImageWidth - GridSize * 2;
+                axis_origin_y = ImageHeight - GridSize;
+
+                line_element = document.createElementNS( svg_namespace, "line" );
+                line_element.setAttribute( "x1", axis_origin_x );
+                line_element.setAttribute( "y1", axis_origin_y );
+                line_element.setAttribute( "x2", axis_origin_x + axis_length );
+                line_element.setAttribute( "y2", axis_origin_y );
+                line_element.setAttribute( "stroke", "red" );
+                line_element.setAttribute( "stroke-width", 2 );
+                svg_element.appendChild( line_element );
+
+                line_element = document.createElementNS( svg_namespace, "line" );
+                line_element.setAttribute( "x1", axis_origin_x );
+                line_element.setAttribute( "y1", axis_origin_y );
+                line_element.setAttribute( "x2", axis_origin_x );
+                line_element.setAttribute( "y2", axis_origin_y - axis_length );
+                line_element.setAttribute( "stroke", "green" );
+                line_element.setAttribute( "stroke-width", 2 );
+                svg_element.appendChild( line_element );
+
+                line_element = document.createElementNS( svg_namespace, "line" );
+                line_element.setAttribute( "x1", axis_origin_x );
+                line_element.setAttribute( "y1", axis_origin_y );
+                line_element.setAttribute( "x2", axis_origin_x + axis_length * 0.866 );
+                line_element.setAttribute( "y2", axis_origin_y - axis_length * 0.5 );
+                line_element.setAttribute( "stroke", "blue" );
+                line_element.setAttribute( "stroke-width", 2 );
+                svg_element.appendChild( line_element );
+
+                text_element = document.createElementNS( svg_namespace, "text" );
+                text_element.setAttribute( "x", axis_origin_x + axis_length + 2.5 );
+                text_element.setAttribute( "y", axis_origin_y + 2.5 );
+                text_element.setAttribute( "fill", "#000000" );
+                text_element.setAttribute( "font-size", "9px" );
+                text_element.setAttribute( "font-weight", "bold" );
+                text_element.textContent = "X";
+                svg_element.appendChild( text_element );
+
+                text_element = document.createElementNS( svg_namespace, "text" );
+                text_element.setAttribute( "x", axis_origin_x - 2.5 );
+                text_element.setAttribute( "y", axis_origin_y - axis_length - 2.5 );
+                text_element.setAttribute( "fill", "#000000" );
+                text_element.setAttribute( "font-size", "9px" );
+                text_element.setAttribute( "font-weight", "bold" );
+                text_element.textContent = "Y";
+                svg_element.appendChild( text_element );
+
+                text_element = document.createElementNS( svg_namespace, "text" );
+                text_element.setAttribute( "x", axis_origin_x + axis_length * 0.866 + 2.5 );
+                text_element.setAttribute( "y", axis_origin_y - axis_length * 0.5 - 2.5 );
+                text_element.setAttribute( "fill", "#000000" );
+                text_element.setAttribute( "font-size", "9px" );
+                text_element.setAttribute( "font-weight", "bold" );
+                text_element.textContent = "Z";
+                svg_element.appendChild( text_element );
+
+                svg_element.addEventListener( 'mousedown', HandleMouseDownEvent );
+                svg_element.addEventListener( 'mousemove', HandleMouseMoveEvent );
+                svg_element.addEventListener( 'mouseup', HandleMouseUpEvent );
+                svg_element.addEventListener( 'mouseleave', HandleMouseUpEvent );
+
+                div_element = document.createElement( "div" );
+                div_element.style.width = "100%";
+                div_element.style.height = "auto";
+                div_element.style.overflow = "hidden";
+                div_element.appendChild( svg_element );
+                document.getElementById( "content" ).appendChild( div_element );
+
+                vertex_component_count = vertex_component_array.length / 3;
+                edge_count = edge_vertex_index_array.length / 2;
+
+                code =
+                    "const INT_6_2\n"
+                    + "    "
+                    + model_name
+                    + "ModelVertexComponentArray[ "
+                    + vertex_component_array.length
+                    + " ] =\n"
+                    + "        {\n";
+
+                for ( vertex_component_index = 0; vertex_component_index < vertex_component_array.length; vertex_component_index += 3 )
+                {
+                    code += "            " + vertex_component_array[ vertex_component_index ] + ", " + vertex_component_array[ vertex_component_index + 1 ] + ", " + vertex_component_array[ vertex_component_index + 2 ];
+
+                    if ( vertex_component_index + 3 < vertex_component_array.length )
+                    {
+                        code += ",";
+                    }
+
+                    code += "\n";
+                }
+
+                code +=
+                    "        };\n"
+                    + "const UINT_8\n"
+                    + "    "
+                    + model_name
+                    + "ModelEdgeVertexIndexArray[ "
+                    + edge_vertex_index_array.length
+                    + " ] =\n"
+                    + "        {\n";
+
+                for ( edge_index = 0; edge_index < edge_vertex_index_array.length; edge_index += 2 )
+                {
+                    code +=
+                        "            "
+                        + edge_vertex_index_array[ edge_index ]
+                        + ", "
+                        + edge_vertex_index_array[ edge_index + 1 ];
+
+                    if ( edge_index + 2 < edge_vertex_index_array.length )
+                    {
+                        code += ",";
+                    }
+
+                    code += "\n";
+                }
+
+                code += "        };";
+
+                code_element = document.createElement( "pre" );
+                code_element.style.margin = "1rem 0";
+                code_element.style.padding = "1rem";
+                code_element.style.backgroundColor = "#f8f8f8";
+                code_element.style.border = "1px solid #ddd";
+                code_element.style.borderRadius = "4px";
+                code_element.style.fontFamily = "monospace";
+                code_element.style.fontSize = "12px";
+                code_element.style.overflow = "auto";
+                code_element.textContent = code;
+                document.getElementById( "content" ).appendChild( code_element );
+            }
+
+            // ~~
+
+            function DrawModels(
+                )
+            {
+                document.getElementById( "content" ).innerHTML = "";
+
+                DrawModel(
+                    "Recognizer",
+                    [],
+                    [
+                        5, 0, 0,
+                        9, 0, 0,
+                        9, 14, 0,
+                        -9, 14, 0,
+                        -9, 0, 0,
+                        -5, 0, 0,
+                        -7, 2, 0,
+                        -7, 9, 0,
+                        7, 9, 0,
+                        7, 2, 0,
+                        5, 14, 0,
+                        0, 18, 0,
+                        -5, 14, 0
+                    ],
+                    [
+                        0, 1,
+                        1, 2,
+                        2, 3,
+                        3, 4,
+                        4, 5,
+                        5, 6,
+                        6, 7,
+                        7, 8,
+                        8, 9,
+                        9, 0,
+                        10, 11,
+                        11, 12
+                    ]
+                    );
+
+                DrawModel(
+                    "FarRecognizer",
+                    [],
+                    [
+                        5, 0, 0,
+                        9, 0, 0,
+                        9, 14, 0,
+                        -9, 14, 0,
+                        -9, 0, 0,
+                        -5, 0, 0,
+                        5, 14, 0,
+                        0, 18, 0,
+                        -5, 14, 0,
+                        9, 9, 0,
+                        -9, 9, 0
+                    ],
+                    [
+                        0, 1,
+                        1, 2,
+                        2, 3,
+                        3, 4,
+                        4, 5,
+                        6, 7,
+                        7, 8,
+                        9, 10
+                    ]
+                    );
+
+                DrawModel(
+                    "VeryFarRecognizer",
+                    [],
+                    [
+                        5, 0, 0,
+                        9, 0, 0,
+                        9, 12, 0,
+                        -9, 12, 0,
+                        -9, 0, 0,
+                        -5, 0, 0,
+                        5, 12, 0,
+                        0, 18, 0,
+                        -5, 12, 0
+                    ],
+                    [
+                        0, 1,
+                        1, 2,
+                        2, 3,
+                        3, 4,
+                        4, 5,
+                        6, 7,
+                        7, 8
+                    ]
+                    );
+
+                DrawModel(
+                    "SuperFarRecognizer",
+                    [],
+                    [
+                        9, 0, 0,
+                        9, 12, 0,
+                        -9, 12, 0,
+                        -9, 0, 0,
+                        0, 18, 0
+                    ],
+                    [
+                        0, 1,
+                        1, 2,
+                        2, 3,
+                        1, 4,
+                        4, 2
+                    ]
+                    );
+
+                DrawModel(
+                    "Arrow",
+                    [],
+                    [
+                        1, 0, 0,
+                        0, 0, 2,
+                        -1, 0, 0
+                    ],
+                    [
+                        0, 1,
+                        1, 2
+                    ]
+                    );
+
+                DrawModel(
+                    "FarArrow",
+                    [],
+                    [
+                        1, 0, 0,
+                        -1, 0, 0
+                    ],
+                    [
+                        0, 1
+                    ]
+                    );
+
+                DrawModel(
+                    "VeryFarArrow",
+                    [],
+                    [
+                        0, 0, 0
+                    ],
+                    [
+                        0, 0
+                    ]
+                    );
+
+                DrawModel(
+                    "Axes",
+                    [
+                        "O",
+                        "X",
+                        "Y",
+                        "Z"
+                    ],
+                    [
+                        0, 0, 0,
+                        10, 0, 0,
+                        0, 10, 0,
+                        0, 0, 10
+                    ],
+                    [
+                        0, 1,
+                        0, 2,
+                        0, 3
+                    ]
+                    );
+            }
+
+            // ~~
+
+            function HandleMouseDownEvent(
+                event
+                )
+            {
+                ItIsDragging = true;
+                DragOldX = event.clientX;
+                DragOldY = event.clientY;
+            }
+
+            // ~~
+
+            function HandleMouseMoveEvent(
+                event
+                )
+            {
+                if ( ItIsDragging )
+                {
+                    const deltaX = event.clientX - DragOldX;
+                    const deltaY = event.clientY - DragOldY;
+
+                    if ( event.shiftKey )
+                    {
+                        ZAngle = Math.min(Math.max(ZAngle + deltaX * 0.25, -180), 180);
+                    }
+                    else
+                    {
+                        YAngle = Math.min( Math.max( YAngle + deltaX * 0.25, -180 ), 180 );
+                    }
+
+                    XAngle = Math.min( Math.max( XAngle - deltaY * 0.25, -90 ), 90 );
+
+                    DragOldX = event.clientX;
+                    DragOldY = event.clientY;
+
+                    DrawModels();
+                }
+            }
+
+            // ~~
+
+            function HandleMouseUpEvent(
+                )
+            {
+                ItIsDragging = false;
+            }
+
+            // -- STATEMENTS
+
+            DrawModels();
+        </script>
+    </body>
+</html>
