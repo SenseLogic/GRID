@@ -1,4 +1,4 @@
-![](https://github.com/senselogic/GRID/blob/master/LOGO/grid.png)
+![](https://github.com/SenseLogic/GRID/blob/master/LOGO/grid.png)
 
 # Grid
 
@@ -14,19 +14,19 @@ When the iconic movie "Tron" was released in 1982, it revolutionized the industr
 
 So when I bought a Commodore 64 the following year, it was already with the clear goal of trying to reimplement a 3D tank game similar to the one depicted in the movie.
 
-![Movie](https://github.com/senselogic/GRID/blob/master/IMAGE/movie_1.png)
-![Space Paranoids](https://github.com/senselogic/GRID/blob/master/IMAGE/movie_2.png)
+![Movie](https://github.com/SenseLogic/GRID/blob/master/IMAGE/movie_1.png)
+![Space Paranoids](https://github.com/SenseLogic/GRID/blob/master/IMAGE/movie_2.png)
 
 Unfortunately, as I was learning how to program Commodore 64 games in Basic and then 6502 assembly language, I quickly realized that its hardware was exclusively designed for 2D games made of sprites and character maps.
 
 Of course, despite these harsh limitations, it wasn't short of fantastic games, such as Shamus, Boulder Dash, MatchPoint, International Soccer, Commando and International Karate, to name just a few.
 
-![Shamus](https://github.com/senselogic/GRID/blob/master/IMAGE/shamus.gif)
-![Boulder Dash](https://github.com/senselogic/GRID/blob/master/IMAGE/boulder_dash.gif)
-![MatchPoint](https://github.com/senselogic/GRID/blob/master/IMAGE/match_point.gif)
-![International Soccer](https://github.com/senselogic/GRID/blob/master/IMAGE/international_soccer.gif)
-![Commando](https://github.com/senselogic/GRID/blob/master/IMAGE/commando.gif)
-![International Karate](https://github.com/senselogic/GRID/blob/master/IMAGE/international_karate.gif)
+![Shamus](https://github.com/SenseLogic/GRID/blob/master/IMAGE/shamus.gif)
+![Boulder Dash](https://github.com/SenseLogic/GRID/blob/master/IMAGE/boulder_dash.gif)
+![MatchPoint](https://github.com/SenseLogic/GRID/blob/master/IMAGE/match_point.gif)
+![International Soccer](https://github.com/SenseLogic/GRID/blob/master/IMAGE/international_soccer.gif)
+![Commando](https://github.com/SenseLogic/GRID/blob/master/IMAGE/commando.gif)
+![International Karate](https://github.com/SenseLogic/GRID/blob/master/IMAGE/international_karate.gif)
 
 But making it run such a 3D game seemed initially impossible, due to the following constraints :
 
@@ -40,12 +40,12 @@ But making it run such a 3D game seemed initially impossible, due to the followi
 
 However with considerable persistence and dedication, I eventually managed to make my dream a reality, though I had to drastically reduce my ambitions to deal with the hardware at hand.
 
-![Grid 1](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_1.png)
-![Grid 2](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_2.png)
-![Grid 3](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_3.png)
-![Grid 4](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_4.png)
-![Grid 5](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_5.png)
-![Grid 6](https://github.com/senselogic/GRID/blob/master/IMAGE/grid_6.png)
+![Grid 1](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_1.png)
+![Grid 2](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_2.png)
+![Grid 3](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_3.png)
+![Grid 4](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_4.png)
+![Grid 5](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_5.png)
+![Grid 6](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_6.png)
 
 [![Gameplay Video](https://img.youtube.com/vi/fgE7rKQw6oo/0.jpg)](https://www.youtube.com/watch?v=fgE7rKQw6oo)
 
