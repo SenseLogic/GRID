@@ -75,13 +75,56 @@ void PlayNote(
     UINT_8
         channel_offset;
     UINT_16
-        note_frequency;
+        frequency;
 
     if ( note_index >= 0 )
     {
+        frequency = NoteFrequencyArray440Hz[ note_index ];
         channel_offset = channel_index * 0x07;
-        note_frequency = NoteFrequencyArray440Hz[ note_index ];
-        PlayChannel( channel_offset, note_frequency, pulse, waveform, attack_decay, sustain_release );
+        PlayChannel( channel_offset, frequency, pulse, waveform, attack_decay, sustain_release );
     }
 }
 
+// ~~
+
+void PlayShotSound(
+    )
+{
+    PlaySound( 2, 0x2200, 10, 0x1200, 0x80, 0x2D, 0x02 );
+}
+
+// ~~
+
+void PlayImpactSound(
+    )
+{
+    PlaySound( 2, 0x1400, 9, 0x0000, 0x80, 0x2D, 0x02 );
+}
+
+// ~~
+
+void PlayExplosionSound(
+    )
+{
+    PlaySound( 2, 0x0400, 9, 0x0000, 0x80, 0x2D, 0x02 );
+}
+
+// ~~
+
+void PlayDefeatSound(
+    )
+{
+    PlayNote( 0, 38, 0x0800, 0x20, 0x2D, 0x02 );
+    PlayNote( 1, 41, 0x0800, 0x20, 0x2D, 0x02 );
+    PlayNote( 2, 45, 0x0800, 0x20, 0x2D, 0x02 );
+}
+
+// ~~
+
+inline void PlayVictorySound(
+    )
+{
+    PlayNote( 0, 48, 0x0800, 0x20, 0x2D, 0x02 );
+    PlayNote( 1, 52, 0x0800, 0x20, 0x2D, 0x02 );
+    PlayNote( 2, 55, 0x0800, 0x20, 0x2D, 0x02 );
+}

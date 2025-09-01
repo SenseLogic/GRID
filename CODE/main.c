@@ -1,6 +1,6 @@
 // -- IMPORTS
 
-#include <c64.h>
+#include <c64/vic.h>
 #include "base.h"
 
 // -- IMPORTS
@@ -25,7 +25,7 @@
 
 // -- FUNCTIONS
 
-void main(
+int main(
     )
 {
     InitializeGame();

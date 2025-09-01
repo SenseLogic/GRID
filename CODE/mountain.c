@@ -109,7 +109,7 @@ void InitializeMountains(
         MountainXOffsetArray[ mountain_x_offset_index ] = -24 + GetRandomNatural( 6 );
     }
 
-    OldMountainXOffset = -1;
+    OldMountainXOffset = 255;
     MountainXOffset = 0;
 }
 

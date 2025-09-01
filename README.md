@@ -92,8 +92,8 @@ Here are some of the strategies I used to make this small 3D game run on a Commo
 
 ## Installation
 
-*   Download [CC65](https://sourceforge.net/projects/cc65/files/cc65-snapshot-win32.zip)
-*   Decompress it in the `TOOL/CC65/` folder
+*   Download [Oscar64](https://github.com/drmortalwombat/oscar64/releases/download/v1.32.263/oscar64.zip)
+*   Decompress it in the `TOOL/OSCAR64/` folder
 *   Download [VICE](https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/GTK3VICE-3.8-win64.zip/download)
 *   Decompress it in the `TOOL/VICE/` folder
 *   Run "run.bat" from the `CODE/` folder
@@ -120,7 +120,6 @@ Apart from being implemented in C, this rewrite includes a few other differences
 
 - There are only six enemy waves.
 - The opening theme is inspired by Daft Punk's *Tron: Legacy* soundtrack.
-- The framerate in the C version is much lower due to CC65's automatic promotion of all arithmetic operations to 16-bit.
 
 ## Version
 

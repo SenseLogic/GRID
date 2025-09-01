@@ -123,7 +123,7 @@ void InitializeModel(
     model->YAngle = y_angle;
     model->ZAngle = z_angle;
     model->Scale = scale;
-    model->OldVertexComponentArray = 0;
+    model->OldVertexComponentArray = nullptr;
     model->VertexComponentArray = vertex_component_array;
     model->VertexComponentCount = vertex_component_count;
     model->EdgeVertexIndexArray = edge_vertex_index_array;
@@ -574,6 +574,11 @@ void DrawCameraFacingModel(
             {
                 GetAngleCosinusSinus( z_angle_cosinus, z_angle_sinus, model_z_angle );
             }
+            else
+            {
+                z_angle_cosinus = 63;
+                z_angle_sinus = 0;
+            }
 
             model_scale = model->Scale;
 
@@ -734,12 +739,22 @@ void DrawModel(
         {
             GetAngleCosinusSinus( x_angle_cosinus, x_angle_sinus, model_x_angle );
         }
+        else
+        {
+            x_angle_cosinus = 63;
+            x_angle_sinus = 0;
+        }
 
         model_y_angle = model->YAngle;
 
         if ( model_y_angle != 0 )
         {
             GetAngleCosinusSinus( y_angle_cosinus, y_angle_sinus, model_y_angle );
+        }
+        else
+        {
+            y_angle_cosinus = 1;
+            y_angle_sinus = 0;
         }
 
         GetModelData( model_vertex_component_array, model_vertex_component_count, model_edge_vertex_index_array, model_edge_vertex_index_count, model, model_z );

@@ -1,5 +1,10 @@
-/TOOL/CC65/
+/TOOL/OSCAR64/
 /TOOL/VICE/
+grid.asm
+grid.int
+grid.lbl
+grid.map
+grid.prg
 !.gitkeep
 
 # Large files

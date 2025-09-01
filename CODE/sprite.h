@@ -95,18 +95,16 @@
 
     #define SetSpriteXPosition( _sprite_index_, _x_position_ ) \
         \
+        if ( ( _x_position_ ) & 0x100 ) \
         { \
-            if ( ( _x_position_ ) & 0x100 ) \
-            { \
-                *( volatile UINT_8 * )0xD010 |= 1 << ( _sprite_index_ ); \
-            } \
-            else \
-            { \
-                *( volatile UINT_8 * )0xD010 &= ~( 1 << ( _sprite_index_ ) ); \
-            } \
-            \
-            *( volatile UINT_8 * )( 0xD000 + ( _sprite_index_ << 1 ) ) = _x_position_; \
-        }
+            *( volatile UINT_8 * )0xD010 |= 1 << ( _sprite_index_ ); \
+        } \
+        else \
+        { \
+            *( volatile UINT_8 * )0xD010 &= ~( 1 << ( _sprite_index_ ) ); \
+        } \
+        \
+        *( volatile UINT_8 * )( 0xD000 + ( _sprite_index_ << 1 ) ) = _x_position_;
 
     // ~~
 
@@ -130,5 +128,5 @@
 
     #define GetSpriteImageByteArray( _sprite_image_index_ ) \
         \
-        ( UINT_8 * )( SpriteAddress + ( ( _sprite_image_index_ ) << 6 ) )
+        ( volatile UINT_8 * )( SpriteAddress + ( ( _sprite_image_index_ ) << 6 ) )
 #endif

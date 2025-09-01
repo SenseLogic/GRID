@@ -68,6 +68,48 @@ UINT_16
 
 // -- FUNCTIONS
 
+UINT_16 GetRandomNatural16(
+    )
+{
+    RandomNatural = RandomNatural * 45 + 21;
+
+    return RandomNatural;
+}
+
+// ~~
+
+UINT_16 GetRandomNatural(
+    UINT_8 bit_count
+    )
+{
+    RandomNatural = RandomNatural * 45 + 21;
+
+    return RandomNatural >> ( 16 - bit_count );
+}
+
+// ~~
+
+INT_16 GetRandomInteger16(
+    )
+{
+    RandomNatural = RandomNatural * 45 + 21;
+
+    return RandomNatural;
+}
+
+// ~~
+
+INT_16 GetRandomInteger(
+    UINT_8 bit_count
+    )
+{
+    RandomNatural = RandomNatural * 45 + 21;
+
+    return ( ( INT_16 )RandomNatural ) >> ( 16 - bit_count );
+}
+
+// ~~
+
 INT_14_2 GetOriginDistance(
     INT_14_2 x,
     INT_14_2 z

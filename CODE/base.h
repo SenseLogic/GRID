@@ -52,53 +52,25 @@
 
     #define ClampInteger( _integer_, _minimum_, _maximum_ ) \
         \
+        if ( ( _integer_ ) < _minimum_ ) \
         { \
-            if ( ( _integer_ ) < _minimum_ ) \
-            { \
-                _integer_ = _minimum_; \
-            } \
-            else if (  ( _integer_ ) > _maximum_ ) \
-            { \
-                _integer_ = _maximum_; \
-            } \
+            _integer_ = _minimum_; \
+        } \
+        else if (  ( _integer_ ) > _maximum_ ) \
+        { \
+            _integer_ = _maximum_; \
         }
 
     // ~~
 
     #define FixInterval( _minimum_, _maximum_, _old_minimum_ ) \
         \
+        if ( ( _minimum_ ) > ( _maximum_ ) ) \
         { \
-            if ( ( _minimum_ ) > ( _maximum_ ) ) \
-            { \
-                _old_minimum_ = _minimum_; \
-                _minimum_ = _maximum_; \
-                _maximum_ = _old_minimum_; \
-            } \
+            _old_minimum_ = _minimum_; \
+            _minimum_ = _maximum_; \
+            _maximum_ = _old_minimum_; \
         }
-
-    // ~~
-
-    #define GetRandomNatural16() \
-        \
-        ( RandomNatural = RandomNatural * 45 + 21 )
-
-    // ~~
-
-    #define GetRandomNatural( _bit_count_ ) \
-        \
-        ( GetRandomNatural16() >> ( 16 - ( _bit_count_ ) ) )
-
-    // ~~
-
-    #define GetRandomInteger16() \
-        \
-        ( ( INT_16 )GetRandomNatural16() )
-
-    // ~~
-
-    #define GetRandomInteger( _bit_count_ ) \
-        \
-        ( GetRandomInteger16() >> ( 16 - ( _bit_count_ ) ) )
 
     // ~~
 

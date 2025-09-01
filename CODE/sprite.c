@@ -32,8 +32,9 @@ void SetSpriteImage(
     const UINT_8 sprite_image_byte_count
     )
 {
+    volatile UINT_8
+        *sprite_byte;
     UINT_8
-        *sprite_byte,
         sprite_byte_count;
 
     sprite_byte = GetSpriteImageByteArray( sprite_image_index );

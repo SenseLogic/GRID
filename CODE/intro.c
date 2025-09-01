@@ -1,3 +1,7 @@
+// -- CONSTANTS
+
+#define PatternIndexCount    sizeof( PatternIndexArray )
+
 // -- VARIABLES
 
 const UINT_8
@@ -96,9 +100,8 @@ const INT_8
         0, -1, 2,
         0, -1, 3
     };
-UINT_8
-    PatternIndexIndex;
 INT_8
+    PatternIndexIndex,
     FirstPatternIndex,
     SecondPatternIndex,
     ThirdPatternIndex;

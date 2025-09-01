@@ -263,7 +263,7 @@ void RezRecognizer(
         GetAngleCosinusSinus( y_angle_cosinus, y_angle_sinus, recognizer_model_y_angle );
         recognizer_model_x += ( y_angle_sinus * recognizer_model_distance ) >> 6;
         recognizer_model_z += ( y_angle_cosinus * recognizer_model_distance ) >> 6;
-        recognizer_model_y_angle += 128;
+        recognizer_model_y_angle += -128;
 
         recognizer_model_is_too_close = GetOriginDistance( recognizer_model_x, recognizer_model_z ) < 10;
 
@@ -568,17 +568,15 @@ void UpdateLevelMusic(
 
 #define GetPositionInterval( _minimum_value_, _maximum_value_, _first_value_, _second_value_, _radius_ ) \
     \
+    if ( ( _first_value_ ) <= ( _second_value_ ) ) \
     { \
-        if ( ( _first_value_ ) <= ( _second_value_ ) ) \
-        { \
-            _minimum_value_ = ( _first_value_ ) - ( _radius_ ); \
-            _maximum_value_ = ( _second_value_ ) + ( _radius_ ); \
-        } \
-        else \
-        { \
-            _minimum_value_ = ( _second_value_ ) - ( _radius_ ); \
-            _maximum_value_ = ( _first_value_ ) + ( _radius_ ); \
-        } \
+        _minimum_value_ = ( _first_value_ ) - ( _radius_ ); \
+        _maximum_value_ = ( _second_value_ ) + ( _radius_ ); \
+    } \
+    else \
+    { \
+        _minimum_value_ = ( _second_value_ ) - ( _radius_ ); \
+        _maximum_value_ = ( _first_value_ ) + ( _radius_ ); \
     }
 
 // ~~
@@ -598,21 +596,8 @@ BOOL IsArrowHittingRecognizer(
         recognizer_minimum_position,
         recognizer_maximum_position;
 
-    GetPositionInterval(
-        arrow_minimum_position,
-        arrow_maximum_position,
-        arrow_old_position,
-        arrow_new_position,
-        arrow_radius
-        );
-
-    GetPositionInterval(
-        recognizer_minimum_position,
-        recognizer_maximum_position,
-        recognizer_old_position,
-        recognizer_new_position,
-        recognizer_radius
-        );
+    GetPositionInterval( arrow_minimum_position, arrow_maximum_position, arrow_old_position, arrow_new_position, arrow_radius );
+    GetPositionInterval( recognizer_minimum_position, recognizer_maximum_position, recognizer_old_position, recognizer_new_position, recognizer_radius );
 
     return
         arrow_minimum_position <= recognizer_maximum_position
@@ -801,8 +786,9 @@ void DrawRadar(
     INT_8
         pixel_x,
         pixel_y;
+    volatile UINT_8
+        *radar_sprite_image_byte_array;
     UINT_8
-        *radar_sprite_image_byte_array,
         radar_sprite_image_byte_index;
     MODEL
         *recognizer_model;
@@ -846,7 +832,7 @@ void DrawRadar(
             }
 
             radar_sprite_image_byte_index = pixel_y * 3 + ( pixel_x >> 3 );
-            radar_sprite_image_byte_array[ radar_sprite_image_byte_index ] |= 0x80 >> ( pixel_x & 7 );
+            radar_sprite_image_byte_array[ radar_sprite_image_byte_index ] |= 0x80 >> ( pixel_x & 7 );    // :BUG: compiler fails to read the value before the or operation
         }
 
         recognizer_model->RadarSpriteImageByteIndex = radar_sprite_image_byte_index;

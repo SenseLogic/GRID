@@ -44,10 +44,8 @@ void ClearBuffer(
 
 #define DrawGridPixel( _pixel_x_ , _pixel_y_ ) \
     \
-    { \
-        pixel_tile_character_bit = ( ( ( _pixel_y_ ) & 3 ) << 1 ) + ( ( _pixel_x_ ) & 1 ); \
-        PixelTileByteArray[ ( UINT_16 )( ( _pixel_y_ ) >> 2 ) * 80 + ( ( _pixel_x_ ) & 0xFE ) ] |= ( 1 << pixel_tile_character_bit ); \
-    }
+    pixel_tile_character_bit = ( ( ( _pixel_y_ ) & 3 ) << 1 ) + ( ( _pixel_x_ ) & 1 ); \
+    PixelTileByteArray[ ( UINT_16 )( ( _pixel_y_ ) >> 2 ) * 80 + ( ( _pixel_x_ ) & 0xFE ) ] |= ( 1 << pixel_tile_character_bit );
 
 // ~~
 
@@ -123,7 +121,6 @@ void DrawPixelTextColor(
         );
 }
 
-
 // ~~
 
 UINT_8 DrawPixelCharacter(
@@ -138,13 +135,11 @@ UINT_8 DrawPixelCharacter(
     const UINT_8
         *font_byte;
 
-    if ( character_code < 128 )
+    character_code &= 127;
+
+    if ( character_code < 64 )
     {
         character_code -= 32;
-    }
-    else
-    {
-        character_code -= 128;
     }
 
     font_byte = FontByteArray + ( ( UINT_16 )character_code << 2 );
