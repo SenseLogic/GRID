@@ -12,7 +12,7 @@
     #define ArrowEnergy    1
     #define ArrowXRadius    2
     #define ArrowZRadius    3
-    #define RecognizerLandingSpeed    32
+    #define RecognizerLandingSpeed    16
     #define RecognizerTurnSpeed    3
     #define RecognizerMotionSpeed    4
     #define RecognizerAttackDistance    30

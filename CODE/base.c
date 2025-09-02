@@ -2,10 +2,8 @@
 
 #include "base.h"
 
-// -- VARIABLES
+// -- CONSTANTS
 
-UINT_16
-    RandomNatural = 32347;
 const INT_8
     AngleSinusArray[ AngleCount ] =
         {
@@ -63,12 +61,16 @@ const INT_8
         0, 1, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 29, 30, 31, 31, 32, 33,
         0, 1, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 26, 27, 28, 29, 29, 30, 31, 31, 32
     };
+
+// -- VARIABLES
+
 UINT_16
+    RandomNatural = 32347,
     FrameIndex = 0;
 
 // -- FUNCTIONS
 
-UINT_16 GetRandomNatural16(
+inline UINT_16 GetRandomNatural16(
     )
 {
     RandomNatural = RandomNatural * 45 + 21;
@@ -82,31 +84,20 @@ UINT_16 GetRandomNatural(
     UINT_8 bit_count
     )
 {
-    RandomNatural = RandomNatural * 45 + 21;
-
-    return RandomNatural >> ( 16 - bit_count );
+    return GetRandomNatural16() >> ( 16 - bit_count );
 }
 
 // ~~
 
-INT_16 GetRandomInteger16(
-    )
-{
-    RandomNatural = RandomNatural * 45 + 21;
-
-    return RandomNatural;
-}
+#define GetRandomInteger16() \
+    \
+    \ ( ( INT_16 )GetRandomNatural16() )
 
 // ~~
 
-INT_16 GetRandomInteger(
-    UINT_8 bit_count
-    )
-{
-    RandomNatural = RandomNatural * 45 + 21;
-
-    return ( ( INT_16 )RandomNatural ) >> ( 16 - bit_count );
-}
+#define GetRandomInteger( _bit_count_ ) \
+    \
+    ( ( ( INT_16 )GetRandomNatural16() ) >> ( 16 - _bit_count_ ) )
 
 // ~~
 

@@ -87,7 +87,7 @@ void PlayNote(
 
 // ~~
 
-void PlayShotSound(
+inline void PlayShotSound(
     )
 {
     PlaySound( 2, 0x2200, 10, 0x1200, 0x80, 0x2D, 0x02 );
@@ -95,7 +95,7 @@ void PlayShotSound(
 
 // ~~
 
-void PlayImpactSound(
+inline void PlayImpactSound(
     )
 {
     PlaySound( 2, 0x1400, 9, 0x0000, 0x80, 0x2D, 0x02 );
@@ -103,7 +103,7 @@ void PlayImpactSound(
 
 // ~~
 
-void PlayExplosionSound(
+inline void PlayExplosionSound(
     )
 {
     PlaySound( 2, 0x0400, 9, 0x0000, 0x80, 0x2D, 0x02 );
@@ -111,7 +111,7 @@ void PlayExplosionSound(
 
 // ~~
 
-void PlayDefeatSound(
+inline void PlayDefeatSound(
     )
 {
     PlayNote( 0, 38, 0x0800, 0x20, 0x2D, 0x02 );

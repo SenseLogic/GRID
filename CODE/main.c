@@ -1,6 +1,5 @@
 // -- IMPORTS
 
-#include <c64/vic.h>
 #include "base.h"
 
 // -- IMPORTS

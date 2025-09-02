@@ -145,47 +145,50 @@ void UpdateIntroMusic(
     UINT_8
         pattern_note_index;
 
-    pattern_note_index = FrameIndex & 0x1F;
-
-    if ( pattern_note_index == 0 )
+    if ( ( FrameIndex & 0x01 ) == 0 )
     {
-        PatternIndexIndex += 3;
+        pattern_note_index = ( FrameIndex >> 1 ) & 0x1F;
 
-        if ( PatternIndexIndex >= PatternIndexCount )
+        if ( pattern_note_index == 0 )
         {
-            PatternIndexIndex = 0;
+            PatternIndexIndex += 3;
+
+            if ( PatternIndexIndex >= PatternIndexCount )
+            {
+                PatternIndexIndex = 0;
+            }
+
+            FirstPatternIndex = PatternIndexArray[ PatternIndexIndex ];
+            SecondPatternIndex = PatternIndexArray[ PatternIndexIndex + 1 ];
+            ThirdPatternIndex = PatternIndexArray[ PatternIndexIndex + 2 ];
         }
 
-        FirstPatternIndex = PatternIndexArray[ PatternIndexIndex ];
-        SecondPatternIndex = PatternIndexArray[ PatternIndexIndex + 1 ];
-        ThirdPatternIndex = PatternIndexArray[ PatternIndexIndex + 2 ];
-    }
+        if ( FirstPatternIndex >= 0 )
+        {
+            PlayNote( 0, NoteIndexArray[ ( FirstPatternIndex << 5 ) + pattern_note_index ], 0x0800, 0x20, 0x09, 0x98 );
+        }
+        else
+        {
+            MuteChannel( 0x00 );
+        }
 
-    if ( FirstPatternIndex >= 0 )
-    {
-        PlayNote( 0, NoteIndexArray[ ( FirstPatternIndex << 5 ) + pattern_note_index ], 0x0800, 0x20, 0x09, 0x98 );
-    }
-    else
-    {
-        MuteChannel( 0x00 );
-    }
+        if ( SecondPatternIndex >= 0 )
+        {
+            PlayNote( 1, NoteIndexArray[ ( SecondPatternIndex << 5 ) + pattern_note_index ], 0x0800, 0x20, 0x09, 0x98 );
+        }
+        else
+        {
+            MuteChannel( 0x07 );
+        }
 
-    if ( SecondPatternIndex >= 0 )
-    {
-        PlayNote( 1, NoteIndexArray[ ( SecondPatternIndex << 5 ) + pattern_note_index ], 0x0800, 0x20, 0x09, 0x98 );
-    }
-    else
-    {
-        MuteChannel( 0x07 );
-    }
-
-    if ( ThirdPatternIndex >= 0 )
-    {
-        PlayNote( 2, NoteIndexArray[ ( ThirdPatternIndex << 5 ) + pattern_note_index ] - 12, 0x0800, 0x20, 0x09, 0x98 );
-    }
-    else
-    {
-        MuteChannel( 0x0E );
+        if ( ThirdPatternIndex >= 0 )
+        {
+            PlayNote( 2, NoteIndexArray[ ( ThirdPatternIndex << 5 ) + pattern_note_index ] - 12, 0x0800, 0x20, 0x09, 0x98 );
+        }
+        else
+        {
+            MuteChannel( 0x0E );
+        }
     }
 }
 
@@ -249,7 +252,7 @@ void ShowIntroScreen(
 
         if ( FrameIndex >= 14 )
         {
-            DrawPixelText( 20, 40, "PRESS START", ( FrameIndex & 0x02 ) ? COLOR_LightRed : COLOR_Black );
+            DrawPixelText( 20, 40, "PRESS START", ( FrameIndex & 0x04 ) ? COLOR_LightRed : COLOR_Black );
         }
 
         DrawGrid();

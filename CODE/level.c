@@ -551,16 +551,19 @@ void UpdateLevelInput(
 void UpdateLevelMusic(
     )
 {
-    if ( GetRandomNatural( 2 ) )
+    if ( ( FrameIndex & 0x01 ) == 0 )
     {
-        FirstNoteIndex = ( FirstNoteIndex + GetRandomNatural( 3 ) ) & 0x7F;
-        PlayNote( 0, NoteIndexArray[ FirstNoteIndex ] - 24, 0x0800, 0x10, 0x2D, 0x02 );
-    }
+        if ( GetRandomNatural( 2 ) )
+        {
+            FirstNoteIndex = ( FirstNoteIndex + GetRandomNatural( 3 ) ) & 0x7F;
+            PlayNote( 0, NoteIndexArray[ FirstNoteIndex ] - 24, 0x0800, 0x10, 0x2D, 0x02 );
+        }
 
-    if ( GetRandomNatural( 2 ) )
-    {
-        SecondNoteIndex = ( SecondNoteIndex + GetRandomNatural( 3 ) ) & 0x7F;
-        PlayNote( 1, NoteIndexArray[ SecondNoteIndex ] - 12, 0x0800, 0x10, 0x2D, 0x02 );
+        if ( GetRandomNatural( 2 ) )
+        {
+            SecondNoteIndex = ( SecondNoteIndex + GetRandomNatural( 3 ) ) & 0x7F;
+            PlayNote( 1, NoteIndexArray[ SecondNoteIndex ] - 12, 0x0800, 0x10, 0x2D, 0x02 );
+        }
     }
 }
 
@@ -832,7 +835,12 @@ void DrawRadar(
             }
 
             radar_sprite_image_byte_index = pixel_y * 3 + ( pixel_x >> 3 );
-            radar_sprite_image_byte_array[ radar_sprite_image_byte_index ] |= 0x80 >> ( pixel_x & 7 );    // :BUG: compiler fails to read the value before the or operation
+
+            DisableInterrupts();
+            RamConfiguration = 0x30;
+            radar_sprite_image_byte_array[ radar_sprite_image_byte_index ] |= 0x80 >> ( pixel_x & 7 );
+            RamConfiguration = 0x37;
+            EnableInterrupts();
         }
 
         recognizer_model->RadarSpriteImageByteIndex = radar_sprite_image_byte_index;

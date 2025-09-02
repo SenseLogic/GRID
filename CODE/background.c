@@ -82,7 +82,7 @@ void InitializeBackground(
     *(volatile char *)0xD020 = COLOR_Blue;
     *(volatile char *)0xD021 = COLOR_Blue;
 
-    __asm { sei }
+    DisableInterrupts();
 
     *(volatile char *)0x0314 = (char)((unsigned)ChangeBackgroundColor);
     *(volatile char *)0x0315 = (char)((unsigned)ChangeBackgroundColor >> 8);
@@ -92,5 +92,5 @@ void InitializeBackground(
     *(volatile char *)0xD012 = 0x00;
     *(volatile char *)0xD019 |= 0x01;
 
-    __asm { cli }
+    EnableInterrupts();
 }

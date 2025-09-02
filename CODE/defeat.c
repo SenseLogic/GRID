@@ -9,8 +9,9 @@ void DrawShattering(
     INT_8
         angle;
     UINT_8
+        line_index;
+    INT_16
         first_distance,
-        line_index,
         second_distance;
 
     for ( line_index = 0;
@@ -40,7 +41,7 @@ void UpdateDefeatInput(
 {
     if ( ( ( Joystick2State & JoystickStateFireMask )
            && !( OldJoystick2State & JoystickStateFireMask ) )
-         || FrameIndex >= 80 )
+         || FrameIndex >= 160 )
     {
        GameState = GAME_STATE_ShowIntroScreen;
     }

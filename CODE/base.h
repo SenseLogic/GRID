@@ -1,36 +1,33 @@
 #ifndef __BASE_H__
     #define __BASE_H__
 
-    // -- IMPORTS
-
-    #include <stdint.h>
-
     // -- CONSTANTS
 
     #define false    0
     #define true    1
     #define AngleCount    256
+    #define RamConfiguration    ( *( volatile char * )0x01 )
 
     // -- TYPES
 
-    #define BOOL    uint8_t
+    #define BOOL    unsigned char
     #define CHAR    char
-    #define INT_2_6    int8_t
-    #define INT_4_4    int8_t
-    #define INT_6_2    int8_t
-    #define INT_8    int8_t
-    #define INT_14_2    int16_t
-    #define INT_16    int16_t
-    #define UINT_2_6    uint8_t
-    #define UINT_4_4    uint8_t
-    #define UINT_6_2    uint8_t
-    #define UINT_8    uint8_t
-    #define UINT_14_2    uint16_t
-    #define UINT_16    uint16_t
+    #define INT_2_6    signed char
+    #define INT_4_4    signed char
+    #define INT_6_2    signed char
+    #define INT_8    signed char
+    #define INT_14_2    signed int
+    #define INT_16    signed int
+    #define UINT_2_6    unsigned char
+    #define UINT_4_4    unsigned char
+    #define UINT_6_2    unsigned char
+    #define UINT_8    unsigned char
+    #define UINT_14_2    unsigned int
+    #define UINT_16    unsigned int
 
     // ~~
 
-    #define COLOR    uint8_t
+    #define COLOR    unsigned char
     #define COLOR_Black    0x00
     #define COLOR_White    0x01
     #define COLOR_Red    0x02
@@ -49,6 +46,18 @@
     #define COLOR_LightGray    0x0F
 
     // -- FUNCTIONS
+
+    #define DisableInterrupts() \
+        \
+        __asm { sei }
+
+    // ~~
+
+    #define EnableInterrupts() \
+        \
+        __asm { cli }
+
+    // ~~
 
     #define ClampInteger( _integer_, _minimum_, _maximum_ ) \
         \

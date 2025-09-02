@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>16-bit Linear Congruential Generator</title>
+    </head>
+    <body>
+        <h1>
+            16-bit Linear Congruential Generator
+        </h1>
+        <pre id="log"></pre>
+        <script>
+            // -- VARIABLES
+
+            var
+                RandomNatural = 32347;
+
+            // -- FUNCTIONS
+
+            function GetRandomNatural16()
+            {
+                RandomNatural = (RandomNatural * 45 + 21) & 0xFFFF;
+                return RandomNatural;
+            }
+
+            // -- STATEMENTS
+
+            var
+                log,
+                random_natural_array,
+                random_natural_count,
+                random_natural_count_map,
+                random_natural_index;
+
+            log = '';
+            random_natural_array = [];
+            random_natural_count_map = new Map();
+
+            for ( random_natural_index = 0;
+                  random_natural_index < 65536;
+                  ++random_natural_index )
+            {
+                random_natural = GetRandomNatural16();
+                random_natural_array.push( random_natural );
+
+                if ( !random_natural_count_map.has( random_natural ) )
+                {
+                    random_natural_count = 1;
+                }
+                else
+                {
+                    random_natural_count = random_natural_count_map.get( random_natural ) + 1;
+                }
+
+                random_natural_count_map.set( random_natural, random_natural_count );
+                log += "[" + random_natural_index + "] " + random_natural + " (" + random_natural_count + ")\n";
+            }
+
+            log += "\nGenerated values: " + random_natural_index;
+            log += "\nUnique values: " + random_natural_count_map.size;
+
+            document.getElementById( 'log' ).textContent = log;
+        </script>
+    </body>
+</html>

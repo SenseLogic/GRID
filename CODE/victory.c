@@ -70,7 +70,7 @@ void UpdateVictoryInput(
 {
     if ( ( ( Joystick2State & JoystickStateFireMask )
            && !( OldJoystick2State & JoystickStateFireMask ) )
-         || FrameIndex >= 25 )
+         || FrameIndex >= 50 )
     {
        GameState = GAME_STATE_ShowIntroScreen;
     }
@@ -102,7 +102,7 @@ void ShowVictoryScreen(
     {
         UpdateVictoryInput();
 
-        DrawPixelTextColor( 26, 76, 7, ( FrameIndex & 0x02 ) ? COLOR_Blue : COLOR_Yellow );
+        DrawPixelTextColor( 26, 76, 7, ( FrameIndex & 0x04 ) ? COLOR_Blue : COLOR_Yellow );
         DrawPortalRays(
             RainbowColorArray[ rainbox_color_index & 3 ],
             RainbowColorArray[ ( rainbox_color_index + 1 ) & 3 ],
