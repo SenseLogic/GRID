@@ -20,6 +20,6 @@
     #define RecognizerHeight    18
     #define RecognizerXRadius    9
     #define RecognizerZRadius    2
-    #define RecognizerWaveCount    6
+    #define RecognizerWaveCount    13
     #define RecognizerTypeCount    4
 #endif

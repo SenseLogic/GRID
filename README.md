@@ -114,11 +114,8 @@ The fastest ones can be derezzed with only one shot, while the heaviest ones req
 - **Numpad 2**: Aim lower
 - **Numpad 0**: Shoot
 
-## Changes
+## Differences
 
-Apart from being implemented in C, this rewrite includes a few other differences from the original :
-
-- There are only six enemy waves.
 - The opening theme is inspired by Daft Punk's *Tron: Legacy* soundtrack.
 
 ## Version
