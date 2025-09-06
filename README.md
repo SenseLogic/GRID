@@ -8,6 +8,10 @@ An 8-bit 3D retro game for the Commodore 64.
 
 A nostalgic tribute to my early days of 3D game development, this project is a complete rewrite in C of the Tron-inspired 3D fan game I originally created in 1983 on my Commodore 64 using 6502 assembly language.
 
+## Download
+
+[grid.prg](https://github.com/SenseLogic/GRID/raw/refs/heads/master/CODE/grid.prg)
+
 ## History
 
 When the iconic movie "Tron" was released in 1982, it revolutionized the industry and inspired a generation of aspiring game developers, myself included.
