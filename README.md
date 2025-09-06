@@ -46,8 +46,7 @@ However with considerable persistence and dedication, I eventually managed to ma
 ![Grid 4](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_4.png)
 ![Grid 5](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_5.png)
 ![Grid 6](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_6.png)
-
-[![Gameplay Video](https://github.com/SenseLogic/GRID/blob/master/VIDEO/gameplay.png)](https://www.youtube.com/watch?v=etTlBgzufo4)
+[![Gameplay Video](https://github.com/SenseLogic/GRID/blob/master/VIDEO/gameplay_small.avif)](https://www.youtube.com/watch?v=etTlBgzufo4)
 
 But despite its ugly graphics and repetitive gameplay, this little fan-game still remains one of my proudest programming achievements to date, along with my full-body real-time 3D character animation application for television shows (1994), my commercial 3D game engine for Windows, Xbox, PlayStation 2 and GameCube (2001), and my real-time supermassive point cloud VR explorer (2019).
 
