@@ -103,7 +103,7 @@ Here are some of the strategies I used to make this small 3D game run on a Commo
 
 ## Gameplay
 
-You command a battle tank tasked with surviving six waves of incoming recognizers, with up to five enemies per wave.
+You command a battle tank tasked with surviving successive waves of incoming recognizers, with up to five enemies per wave.
 
 Recognizers come in four distinct classes, each with unique characteristics (color, speed and shield level).
 
@@ -117,9 +117,9 @@ The fastest ones can be derezzed with only one shot, while the heaviest ones req
 - **Numpad 2**: Aim lower
 - **Numpad 0**: Shoot
 
-## Differences
+## Changes
 
-- The opening theme is inspired by Daft Punk's *Tron: Legacy* soundtrack.
+- The opening theme of this rewrite is inspired by Daft Punk's *Tron: Legacy* soundtrack.
 
 ## Version
 
