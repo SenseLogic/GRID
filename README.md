@@ -34,13 +34,13 @@ Of course, despite these harsh limitations, it wasn't short of fantastic games, 
 
 But making it run such a 3D game seemed initially impossible, due to the following constraints :
 
--   A very slow 8-bit CPU :
-    -   Only capable of basic arithmetic operations on 8-bit integers;
-    -   Without hardware support for integer divisions, 16-bit operations or floating-point numbers.
--   A 2D graphics chip with :
-    -   A character-based display with 40 rows of 25 characters;
-    -   Eight 24x21 pixel hardware sprites.
--   Only 64 KB of RAM to store all the game code and data.
+- A very slow 8-bit CPU :
+  - Only capable of basic arithmetic operations on 8-bit integers;
+  - Without hardware support for integer divisions, 16-bit operations or floating-point numbers.
+- A 2D graphics chip with :
+  - A character-based display with 40 rows of 25 characters;
+  - Eight 24x21 pixel hardware sprites.
+- Only 64 KB of RAM to store all the game code and data.
 
 However with considerable persistence and dedication, I eventually managed to make my dream a reality, though I had to drastically reduce my ambitions to deal with the hardware at hand.
 
@@ -50,7 +50,7 @@ However with considerable persistence and dedication, I eventually managed to ma
 ![Grid 4](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_4.png)
 ![Grid 5](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_5.png)
 ![Grid 6](https://github.com/SenseLogic/GRID/blob/master/IMAGE/grid_6.png)
-[![Gameplay Video](https://github.com/SenseLogic/GRID/blob/master/VIDEO/gameplay_small.avif)](https://www.youtube.com/watch?v=etTlBgzufo4)
+[![Gameplay Video](https://github.com/SenseLogic/GRID/blob/master/VIDEO/gameplay_small.avif)](https://www.youtube.com/watch?v=etTlBgzufo4)<br>[https://www.youtube.com/watch?v=etTlBgzufo4](https://www.youtube.com/watch?v=etTlBgzufo4)
 
 But despite its ugly graphics and repetitive gameplay, this little fan-game still remains one of my proudest programming achievements to date, along with my full-body real-time 3D character animation application for television shows (1994), my commercial 3D game engine for Windows, Xbox, PlayStation 2 and GameCube (2001), and my real-time supermassive point cloud VR explorer (2019).
 
@@ -60,46 +60,46 @@ Not only did this project start my long journey into 3D multimedia development, 
 
 Here are some of the strategies I used to make this small 3D game run on a Commodore 64 :
 
-*   **8-bit CPU** :
+* **8-bit CPU** :
 
-    *   Implement the entire game in highly optimized 6502 assembly language.
-    *   Use 8-bit integers (-128 to 127) for angles, allowing for 256 possible angles.
-    *   Use 2.6 fixed-point 8-bit integers for sinuses and cosinuses.
-    *   Use 4.4 fixed-point 8-bit integers for local scales.
-    *   Use 6.2 fixed-point 8-bit integers for local coordinates and speeds.
-    *   Use 16-bit integers (-32768 to 32767) for 8-bit product and left shift results.
-    *   Use 14.2 fixed-point 16-bit integers for world coordinates.
-    *   Emulate 16-bit operations (addition, multiplication, shift, division) in software.
-    *   Use multiplications and divisions only where it's not possible to replace them by shifts.
-    *   Use lookup tables with precomputed sinuses, arctangents and projection factors.
-    *   Move and rotate the world around the player tank to keep it at the origin.
-    *   Rotate the camera by 7-degree increments, using 1 and 1/8 as cosinus and sinus approximations.
-    *   Cull models outside the view frustum.
-    *   Render models in wireframe, using as few vertices as possible.
-    *   Use 2D models for the recognizers and 3D models for the arrows.
-    *   Render less wireframe lines for distant recognizers and arrows.
-    *   Only allow X and Y rotations for 3D models.
+  * Implement the entire game in highly optimized 6502 assembly language.
+  * Use 8-bit integers (-128 to 127) for angles, allowing for 256 possible angles.
+  * Use 2.6 fixed-point 8-bit integers for sinuses and cosinuses.
+  * Use 4.4 fixed-point 8-bit integers for local scales.
+  * Use 6.2 fixed-point 8-bit integers for local coordinates and speeds.
+  * Use 16-bit integers (-32768 to 32767) for 8-bit product and left shift results.
+  * Use 14.2 fixed-point 16-bit integers for world coordinates.
+  * Emulate 16-bit operations (addition, multiplication, shift, division) in software.
+  * Use multiplications and divisions only where it's not possible to replace them by shifts.
+  * Use lookup tables with precomputed sinuses, arctangents and projection factors.
+  * Move and rotate the world around the player tank to keep it at the origin.
+  * Rotate the camera by 7-degree increments, using 1 and 1/8 as cosinus and sinus approximations.
+  * Cull models outside the view frustum.
+  * Render models in wireframe, using as few vertices as possible.
+  * Use 2D models for the recognizers and 3D models for the arrows.
+  * Render less wireframe lines for distant recognizers and arrows.
+  * Only allow X and Y rotations for 3D models.
 
-*   **2D GPU** :
+* **2D GPU** :
 
-    *   Define a custom font of 256 characters that renders all possible tiles of 2x4 pixels.
-    *   Draw the 3D grid, recognizers and arrows through this font on the 40x25 screen characters, allowing for a virtual grid of 80x100 pixels.
-    *   Draw the ground dots row by row, extrapolating all row vertices from the two middle dots.
-    *   Draw everything else (title, mountains, reticle, radar) using the 8 hardware sprites.
+  * Define a custom font of 256 characters that renders all possible tiles of 2x4 pixels.
+  * Draw the 3D grid, recognizers and arrows through this font on the 40x25 screen characters, allowing for a virtual grid of 80x100 pixels.
+  * Draw the ground dots row by row, extrapolating all row vertices from the two middle dots.
+  * Draw everything else (title, mountains, reticle, radar) using the 8 hardware sprites.
 
-*   **64 KB of RAM**
+* **64 KB of RAM**
 
-    *   Use compact data types for all variables, arrays and data structures.
-    *   Compress the model, sprite and music data.
-    *   Generate the level music dynamically.
+  * Use compact data types for all variables, arrays and data structures.
+  * Compress the model, sprite and music data.
+  * Generate the level music dynamically.
 
 ## Installation
 
-*   Download [Oscar64](https://github.com/drmortalwombat/oscar64/releases/download/v1.32.263/oscar64.zip)
-*   Decompress it in the `TOOL/OSCAR64/` folder
-*   Download [VICE](https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/GTK3VICE-3.8-win64.zip/download)
-*   Decompress it in the `TOOL/VICE/` folder
-*   Run "run.bat" from the `CODE/` folder
+* Download [Oscar64](https://github.com/drmortalwombat/oscar64/releases/download/v1.32.263/oscar64.zip)
+* Decompress it in the `TOOL/OSCAR64/` folder
+* Download [VICE](https://sourceforge.net/projects/vice-emu/files/releases/binaries/windows/GTK3VICE-3.8-win64.zip/download)
+* Decompress it in the `TOOL/VICE/` folder
+* Run "run.bat" from the `CODE/` folder
 
 ## Gameplay
 
